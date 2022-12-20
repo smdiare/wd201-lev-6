@@ -3,55 +3,57 @@ const express = require("express");
 const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
-const path = require("path");
 app.use(bodyParser.json());
 
-app.set("view engine", "ejs");
-
-app.get("/", async (request, response) => {
-  const allTodos = await Todo.getTodo();
-  if (request.accepts("html")) {
-    response.render("index", { allTodos });
-  } else {
-    response.json({ allTodos });
-  }
+app.get("/", function (request, response) {
+  response.send("Hello World");
 });
 
-// eslint-disable-next-line no-undef
-app.use(express.static(path.join(__dirname, "public")));
-
-app.get("/todos", async (request, response) => {
-  const todoItems = await Todo.getTodo();
-  response.json(todoItems);
-});
-
-app.post("/todos", async (request, response) => {
+app.get("/todos", async function (request, response) {
+  console.log("Processing list of all Todos ...");
   try {
-    const todo = await Todo.addTodo({
-      title: request.body.title,
-      dueDate: request.body.dueDate,
-    });
-    return response.json(todo);
-  } catch (error) {
+    const todoItems = await Todo.getTodo();
+    response.json(todoItems);
+    }
+  catch (error) {
     console.error(error);
     return response.status(422).json(error);
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async (request, response) => {
-  console.log("We have to update a todo with ID:", request.params.id);
+app.get("/todos/:id", async function (request, response) {
+  try {
+    const todo = await Todo.findByPk(request.params.id);
+    return response.json(todo);
+  } catch (error) {
+    console.log(error);
+    return response.status(422).json(error);
+  }
+});
+
+app.post("/todos", async function (request, response) {
+  try {
+    const todo = await Todo.addTodo(request.body);
+    return response.json(todo);
+  } catch (error) {
+    console.log(error);
+    return response.status(422).json(error);
+  }
+});
+
+app.put("/todos/:id/markAsCompleted", async function (request, response) {
   const todo = await Todo.findByPk(request.params.id);
   try {
     const updatedTodo = await todo.markAsCompleted();
     return response.json(updatedTodo);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return response.status(422).json(error);
   }
 });
 
-app.delete("/todos/:id", async (request, response) => {
-  console.log("Delete a todo by ID:", request.params.id);
+app.delete("/todos/:id", async function (request, response) {
+  console.log("We have to delete a Todo with ID: ", request.params.id);
   try {
     const deletedTodo = await Todo.deleteTodo(request.params.id);
     return response.send(deletedTodo ? true : false);
