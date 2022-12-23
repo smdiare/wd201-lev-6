@@ -19,8 +19,6 @@
             </ul>
         <% } %>
     <% } %>
-    </div>
-    <div>
     <h5>Due Today <span class="bg-green-100 ml-2 px-2"><%=y%></span></h5>
     
     <% for(var i=0;i<allTodos.length;i++) { %>
@@ -40,8 +38,6 @@
             </ul>
         <% } %>
     <% } %>
-    </div>
-    <div>
     <h5>Due Later <span class="bg-green-100 ml-2 px-2"><%=z%></span></h5>
     <% for(var i=0;i<allTodos.length;i++) { %>
         <% if (allTodos[i].dueDate>new Date().toLocaleDateString("en-CA")) { %>
