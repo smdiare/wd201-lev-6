@@ -1,11 +1,10 @@
 body{
-    background-color:lightblue;
+    font-family:sans-serif;
+    background-color:white;
 }
 .h1{
     color:red;
 }
-footer {
-    background-color:lightgray;
-    padding: 3px;
-
-  }
+.Todo-item:hover .trash-item{
+    display:block;
+}

@@ -9,16 +9,21 @@ const path=require("path");
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
+
 app.get("/", async function (request, response) {
   const allTodos = await Todo.getTodo();
+  const s=await Todo.overdue();
+  const m=await Todo.dueToday();
+  const d=await Todo.dueLater();
   if(request.accepts("html")){
-    response.render("index", {allTodos});
+    response.render("index", {allTodos,x:s.length,y:m.length,z:d.length});
   }else{
     response.json({allTodos})
   }
 });
 
 app.use(express.static(path.join(__dirname,'public')));
+
 
 app.get("/todos", async function (request, response) {
   console.log("Processing list of all Todos ...",request.body);
