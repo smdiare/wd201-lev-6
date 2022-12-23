@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     static overdue() {
       const s= this.findAll({
         where: {
-          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") }
+          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
+          completed: false,
         },
       });
       return s;
@@ -31,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     static dueToday() {
       const m=this.findAll({
         where: {
-          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") }
+          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
+          completed: false,
         },
       });
       return m;
@@ -39,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
     static dueLater() {
       const d= this.findAll({
         where: {
-          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") }
+          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
+          completed: false,
         },
       });
       return d;
