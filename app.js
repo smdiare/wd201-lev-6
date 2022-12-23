@@ -16,7 +16,7 @@ app.get("/", async function (request, response) {
   const m=await Todo.dueToday();
   const d=await Todo.dueLater();
   if(request.accepts("html")){
-    response.render("index", {allTodos,x:s.length,y:m.length,z:d.length});
+    response.render("index", {allTodos,x:s,y:m,z:d});
   }else{
     response.json({allTodos})
   }
